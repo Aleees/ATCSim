@@ -1,8 +1,8 @@
 /*
- * AirController.h
+ * Storm.h
  *
- *  Created on: 21/07/2014
- *      Author: paco
+ *  Created on: 12/11/2014
+ *      Author: Jonathan
  *
  *  Copyright 2014 Francisco Martín
  *
@@ -21,20 +21,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <string>
 
-#ifndef AIRCONTROLLER_H_
-#define AIRCONTROLLER_H_
+#ifndef ___STORM___
+#define ___STORM___
 
-#include "Singleton.h"
+#include "Position.h"
+#include "Common.h"
+#include <list>
+#include "Flight.h"
 
-class AirController: public Singleton<AirController> {
+class Storm {
 public:
-	AirController();
-	virtual ~AirController();
+	Storm(int _id, Position _pos, float _bearing);
+	virtual ~Storm();
 
-	void doWork();
+	void update(float delta_t);
+	void draw();
+
+	Position getPosition() { return pos;};
+	float getBearing() { return bearing;};
+	float getSpeed() { return speed;};
+	int getId(){return id;};
+
 private:
-	float tablahorarios[10][30];
+	int id;
+	Position pos, last_pos;
+	float bearing,inclination;
+	float speed;
+	float radio;
+	float minh, maxh;
 };
 
-#endif /* AIRCONTROLLER_H_ */
+#endif /*  ___STORM___ */

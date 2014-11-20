@@ -37,11 +37,33 @@ AirController::~AirController() {
 	// TODO Auto-generated destructor stub
 }
 
+// bool AirController::checkAvailability(float pista, float tiempo)
+// {
+//	int i,j;
+//	for(i=pista;i>0;i--)
+//	{
+//		for(j=tiempo;j>0;i--)
+//		{
+//			if(tablahorarios[i][j]==true)		
+//		
+//		}
+//	
+//	
+//	}
+// 
+// 
+// }
+
+
 void
 AirController::doWork()
 {
 	std::list<Flight*> flights = Airport::getInstance()->getFlights();
 	std::list<Flight*>::iterator it;
+	
+	
+	
+	
 
 	Position pos1(500.0, 0.0, 100.0);
 	Position pos2(0.0, 0.0, 25.0);

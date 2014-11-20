@@ -27,6 +27,7 @@
 
 #include "Singleton.h"
 #include "Flight.h"
+#include "Storm.h"
 
 #include <math.h>
 
@@ -55,19 +56,22 @@ private:
 	void checkCollisions();
 	void checkCrashes();
 	void generate_flight();
+	void generate_storm();
 
 	std::list<Flight*>::iterator removeFlight(std::string id);
+	void removeStorm();
 
 	std::list<Flight*> flights;
 	std::list<Flight*>::iterator focus;
-
+	
+	std::list<Storm*> storms;
 	struct timeval last_ts;
 	Position final_pos;
 	int sec;
 	int points;
 	int max_flights;
 	long crono;
-    float SimTimeMod;
+ 	float SimTimeMod;
 };
 
 #endif /* AIRPORT_H_ */

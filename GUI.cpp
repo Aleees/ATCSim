@@ -204,18 +204,19 @@ GUI::init()
 
 	GLfloat aspect = (GLfloat) win_width / win_height;
 
-	glMatrixMode(GL_PROJECTION);												// select projection matrix
-	glViewport(0, 0, win_width, win_height);									// set the viewport
-	glMatrixMode(GL_PROJECTION);												// set matrix mode
-	glLoadIdentity();															// reset projection matrix
-	gluPerspective(field_of_view_angle, aspect, x_near, x_far);				// set up a perspective projection matrix
-	glMatrixMode(GL_MODELVIEW);													// specify which matrix is the current matrix
+	glMatrixMode(GL_PROJECTION);				// select projection matrix
+	glViewport(0, 0, win_width, win_height);		// set the viewport
+	
+	glMatrixMode(GL_PROJECTION);				// set matrix mode
+	glLoadIdentity();					// reset projection matrix
+	gluPerspective(field_of_view_angle, aspect, x_near, x_far);	// set up a perspective projection matrix
+	glMatrixMode(GL_MODELVIEW);				// specify which matrix is the current matrix
 	glShadeModel( GL_SMOOTH );
-	glClearDepth( 1.0f );														// specify the clear value for the depth buffer
+	glClearDepth( 1.0f );					// specify the clear value for the depth buffer
 	glEnable( GL_DEPTH_TEST );
 	glDepthFunc( GL_LEQUAL );
-	glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );						// specify implementation-specific hints
-	glClearColor(0.0, 0.0, 0.0, 1.0);											// specify clear values for the color buffers
+	glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
+	glClearColor(0.0, 0.0, 0.0, 1.0);			// specify clear values for the color buffers
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

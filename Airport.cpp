@@ -92,6 +92,55 @@ Airport::generate_flight()
 		NextFocus();
 }
 
+void
+Airport::generate_storm()
+{
+	float angle, x, y, z;
+	float xend,yend,zend;
+	float extremo;
+
+	float bear, inc;
+	int idstorm;
+	
+	angle = toRadians((float)(rand() % 360 - 180));
+
+	//Definicion del punto de incio
+	extremo = 1-2*(randomDouble()<0.5);
+	if(randomDouble()<0.5)
+	{
+		x = MAX_POS_X_STORM*extremo; //Empezar en 2000 o -2000
+		y = MAX_POS_Y_STORM * sin(angle);
+		z = 2000.0f + (float)(rand() % 2000);
+		bear = extremo*randomDouble()*0.7*pi;
+	
+	} else {
+			
+		x = MAX_POS_X_STORM * cos(angle);
+		y = MAX_POS_Y_STORM*extremo; //Empezar en 2000 o -2000
+		z = 2000.0f + (float)(rand() % 2000);
+		if(extremo==1)
+		{
+			bear = (1.5-randomDouble())*0.7*pi;
+		} else {
+			bear = (0.5-randomDouble())*0.7*pi;
+		}
+	}
+
+	Position ipos(x, y, z);
+	
+	inc = 0;
+	if(storms.size()!=0)
+		idstorm = storms.back()->getId()+1;
+	else
+		idstorm = 1;
+	
+	Storm *aux;
+	aux = new Storm(idstorm, ipos, bear);
+	storms.push_back(aux);
+
+
+}
+
 
 void
 Airport::NextFocus()
@@ -123,6 +172,7 @@ Airport::step()
 	float delta_t;
 	struct timeval tv;
 	std::list<Flight*>::iterator it;
+	std::list<Storm*>::iterator its;
 	long ta, tb;
 
 	gettimeofday(&tv, NULL);
@@ -146,13 +196,26 @@ Airport::step()
 			(*it)->update(SimTimeMod * delta_t);
 			(*it)->draw();
 		}
+		
+	if(!storms.empty())
+		for(its=storms.begin();its!=storms.end();++its)
+		{
+			(*its)->update(SimTimeMod * delta_t);
+			(*its)->draw();
+		}
 
 	checkLandings();
 	checkCollisions();
 	checkCrashes();
 
+
 	if(flights.size()<max_flights)
 		generate_flight();
+		
+	if(storms.size()<1)
+		generate_storm();
+		
+	removeStorm();
 }
 
 
@@ -186,6 +249,29 @@ Airport::removeFlight(std::string id)
 
 }
 
+
+void
+Airport::removeStorm()
+{
+	std::list<Storm*>::iterator it;
+
+	it=storms.begin();
+	while(it!= storms.end())
+	{
+		if(abs((*it)->getPosition().get_x())>(MAX_POS_X_STORM+100) || 
+			abs((*it)->getPosition().get_y())>(MAX_POS_Y_STORM+100))
+		{
+			delete(*it);
+			it = storms.erase(it);
+	
+		}	
+		it++;
+	
+	}	
+
+
+}
+
 void
 Airport::checkCollisions()
 {
@@ -216,6 +302,8 @@ Airport::checkCollisions()
 		i++;
 	}
 }
+
+
 
 
 void
@@ -270,6 +358,8 @@ Airport::checkLandings()
 	}
 
 }
+
+
 
 void
 Airport::UpdateSimTime(float inc)
