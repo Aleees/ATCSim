@@ -38,6 +38,7 @@
 #endif
 
 #include <cstdlib>
+#include <cmath>
 
 Airport::Airport() {
 
@@ -45,7 +46,7 @@ Airport::Airport() {
 
 	gettimeofday(&last_ts, NULL);
 	crono = last_ts.tv_sec*1000000 + last_ts.tv_usec;
-
+	cronostorm = last_ts.tv_sec*1000000 + last_ts.tv_usec;
 	final_pos.set_x(LANDING_POS_X);
 	final_pos.set_y(LANDING_POS_Y);
 	final_pos.set_z(LANDING_POS_Z);
@@ -111,19 +112,21 @@ Airport::generate_storm()
 		x = MAX_POS_X_STORM*extremo; //Empezar en 2000 o -2000
 		y = MAX_POS_Y_STORM * sin(angle);
 		z = 2000.0f + (float)(rand() % 2000);
-		bear = extremo*randomDouble()*0.7*pi;
+		//bear = extremo*randomDouble()*0.7*pi;
+		bear = (0.5 + extremo*randomDouble())*pi;
 	
 	} else {
 			
 		x = MAX_POS_X_STORM * cos(angle);
 		y = MAX_POS_Y_STORM*extremo; //Empezar en 2000 o -2000
 		z = 2000.0f + (float)(rand() % 2000);
-		if(extremo==1)
-		{
-			bear = (1.5-randomDouble())*0.7*pi;
-		} else {
-			bear = (0.5-randomDouble())*0.7*pi;
-		}
+//		if(extremo==1)
+//		{
+//			bear = (1.5-randomDouble())*pi;
+//		} else {
+//			bear = (0.5-randomDouble())*pi;
+//		}
+		bear = -extremo*randomDouble()*pi;
 	}
 
 	Position ipos(x, y, z);
@@ -174,6 +177,7 @@ Airport::step()
 	std::list<Flight*>::iterator it;
 	std::list<Storm*>::iterator its;
 	long ta, tb;
+	float x,mu,st;
 
 	gettimeofday(&tv, NULL);
 
@@ -188,6 +192,12 @@ Airport::step()
 		max_flights += INC_PEN;
 		std::cerr<<"Increase flights in "<<INC_PEN<<" to "<<max_flights<<std::endl;
 		crono = ta;
+	}
+	if((ta-cronostorm)>(MEAN_TIME_STORM+VARIANCE_TIME_STORM*(1-randomDouble()*2))*1000000)
+	{
+		generate_storm();
+		cronostorm = ta;
+
 	}
 
 	if(!flights.empty())
@@ -207,13 +217,14 @@ Airport::step()
 	checkLandings();
 	checkCollisions();
 	checkCrashes();
+	checkInstorm();
 
 
 	if(flights.size()<max_flights)
 		generate_flight();
 		
-	if(storms.size()<1)
-		generate_storm();
+//	if(storms.size()<1)
+//		generate_storm();
 		
 	removeStorm();
 }
@@ -356,6 +367,59 @@ Airport::checkLandings()
 		}else
 			it++;
 	}
+
+}
+
+void
+Airport::checkInstorm()
+{
+
+	std::list<Flight*>::iterator flit;
+	std::list<Storm*>::iterator stit;
+	bool removed = false;
+	float minh, maxh, stormx, stormy, stormz,stormr, flx, fly, flz, distance2d;
+	bool instorm = false;
+
+
+	flit =  flights.begin();
+
+
+
+	while(flit != flights.end())
+	{
+		stit = storms.begin();
+
+//		if(j!=storms.end()) j++;
+
+		while(stit != storms.end())
+		{
+			flx = (*flit)->getPosition().get_x();
+			fly = (*flit)->getPosition().get_y();
+			flz = (*flit)->getPosition().get_z();
+
+			stormx = (*stit)->getPosition().get_x();
+			stormy = (*stit)->getPosition().get_y();
+			stormz = (*stit)->getPosition().get_z();
+			stormr = (*stit)->getRadius();
+
+			distance2d = sqrt(pow(flx-stormx,2)+pow(fly-stormy,2));
+			minh = (*stit)->getMinh();
+			maxh = (*stit)->getMaxh();
+			if((flz > (stormz-minh)) && (flz<(stormz+maxh)) && distance2d<stormr)
+			{
+				instorm = true;
+				std::cerr<<"avion "<<(*flit)->getId()<<"en tormenta"<<std::endl;
+				break;
+			}
+			else
+				instorm = false;
+			stit++;
+		}
+		(*flit)->setInstorm(instorm);
+		flit++;
+	}
+
+
 
 }
 

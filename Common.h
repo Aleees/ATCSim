@@ -52,6 +52,8 @@
 #define MAX_POS_X_STORM		10000
 #define MAX_POS_Y_STORM		10000
 #define MIN_POS_Z_STORM		500
+#define MEAN_TIME_STORM		30
+#define VARIANCE_TIME_STORM	10
 
 /**
 * defines the sign of a (-1, 0 or 1)

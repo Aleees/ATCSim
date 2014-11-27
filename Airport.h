@@ -57,6 +57,7 @@ private:
 	void checkCrashes();
 	void generate_flight();
 	void generate_storm();
+	void checkInstorm();
 
 	std::list<Flight*>::iterator removeFlight(std::string id);
 	void removeStorm();
@@ -71,6 +72,7 @@ private:
 	int points;
 	int max_flights;
 	long crono;
+	long cronostorm;
  	float SimTimeMod;
 };
 

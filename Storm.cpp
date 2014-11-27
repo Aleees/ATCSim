@@ -50,11 +50,12 @@ Storm::Storm(int _id, Position _pos, float _bearing)
 	
 	id = _id;
 	pos = _pos;
-	bearing = _bearing-pi/2;
+	bearing = _bearing;
 	speed = 2000 + randomDouble()*100; //VIentos entre 20 y 100 m/s
 	radio = randomDouble()*1900.0 + 100.0; //Radio de la tormenta entre 100 y 2000m
-	minh = 100 + randomDouble()*1900; //Altura minima a la que se ven afectados los aviones
+	minh = 1000 + randomDouble()*1900; //Altura minima a la que se ven afectados los aviones
 	maxh = minh + randomDouble()*(2000-minh);
+	inclination = 0;
 	std::cerr	<<"Tormenta creada. Pos("<<pos.get_x()<<","<<pos.get_y()<<")"<<std::endl
 			<<"bearing: "<<bearing*180/pi<<std::endl;
 
@@ -70,8 +71,8 @@ Storm::update(float delta_t)
 	trans = speed * delta_t;
 
 
-	pos.set_x(pos.get_x() + trans * sin(bearing) * cos(inclination));
-	pos.set_y(pos.get_y() + trans * cos(bearing) * cos(inclination));
+	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
+	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
 //	if(pos.distance(last_pos) > pos.distance(endpos))
@@ -87,15 +88,27 @@ Storm::draw()
 	
 
 	glPushMatrix();
+		//Color of the storm: white with transparency
+		glColor4f(1.0f, 1.0f, 1.0f, 0.4f);
+			//Position where to draw the storm
+		glTranslatef(pos.get_x(), pos.get_y(), pos.get_z()-minh);
+			//Variable that it is going to hold the storm
+		GLUquadric *quadratic = gluNewQuadric();
+			//Set textures
+		gluQuadricNormals(quadratic, GLU_SMOOTH);
+			//GLUquadratic colorcilinder[2,2,2,1]
+		gluQuadricTexture(quadratic, GL_TRUE);
+			//gluSphere( quadratic, COLLISION_DISTANCE/2.0f, 32, 32);
+		gluCylinder(quadratic, radio,radio,maxh+minh,32,1);
 
-	//Draw Aeroplane
-	glTranslatef(pos.get_x(), pos.get_y(), pos.get_z());
-	GLUquadric *quadratic = gluNewQuadric();
-	gluQuadricNormals(quadratic, GLU_SMOOTH);
-	//GLUquadratic colorcilinder[2,2,2,1]
-	gluQuadricTexture(quadratic, GL_TRUE);
-	//gluSphere( quadratic, COLLISION_DISTANCE/2.0f, 32, 32);
-	gluCylinder(quadratic, radio,radio,500,32,1);
+		//La tapa
+		glTranslatef(0, 0, maxh+minh);
+		glBegin(GL_POLYGON);
+			for(double i = 0; i < 2 * pi; i += pi / 32) //<-- Change this Value
+		 			glVertex3f(cos(i) * radio, sin(i) * radio, 0.0);
+
+		glEnd();
+
 	glPopMatrix();
 
 }

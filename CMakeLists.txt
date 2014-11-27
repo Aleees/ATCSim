@@ -15,6 +15,7 @@ set(CMAKE_CXX_FLAGS "-g -Wno-deprecated-declarations")
 add_executable(ATCSim
 	GUI.h GUI.cpp
 	Flight.h Flight.cpp
+	Storm.h Storm.cpp
 	Airport.h Airport.cpp
 	Position.h Position.cpp
 	AirController.h AirController.cpp

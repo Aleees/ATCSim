@@ -43,6 +43,9 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	int getId(){return id;};
+	float getMinh(){return minh;};
+	float getMaxh(){return maxh;};
+	float getRadius(){return radio;};
 
 private:
 	int id;

@@ -7,9 +7,20 @@ Introduccion de var globales para tormenta
 //Storm.h Storm.cpp
 
 //Airport
-Añadido funciones: generate_storm, 
+Añadido funciones:
+	generate_storm
+	removestorm
+	instorm
+
+Añadido de variables
+	cronostorm ->contiene el tiempo de ultima tormenta
+
+//flight
+Añadido parametros:
+	instrorm;
+
+	Se cambia tambien la forma de restar puntos para tener en cuenta si esta en tormenta
 
 
 
-//CUIDADO TORMETAS NO SE ELIMINAN. ELIMINADOR	CREADO YA
 //cUIDADP POS INICIO

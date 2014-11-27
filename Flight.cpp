@@ -55,6 +55,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 
 	points = INIT_FLIGHT_POINTS;
 	focused = false;
+	instorm = false;
 }
 
 void
@@ -85,7 +86,7 @@ Flight::update(float delta_t)
 	if(pos.distance(last_pos) > pos.distance(CPpos))
 		route.pop_front();
 
-	points = points - delta_t;
+	points = points - delta_t - instorm*delta_t*3;
 
 }
 
@@ -102,19 +103,19 @@ Flight::draw()
 	glRotatef(toDegrees(bearing), 0.0f, 0.0f, 1.0f);
 	glRotatef(toDegrees(-inclination), 0.0f, 1.0f, 0.0f);
 	glBegin(GL_POLYGON);
-	glColor3f(1.0f,0.0f,0.0f);
+		glColor3f(1.0f,0.0f,0.0f);
 
-	glVertex3f( 30.0f, 0.0f, 0.0f);
-	glVertex3f( -30.0f, 32.0f, 0.0f);
-	glVertex3f( -30.0f, -32.0f, 0.0f);
+		glVertex3f( 30.0f, 0.0f, 0.0f);
+		glVertex3f( -30.0f, 32.0f, 0.0f);
+		glVertex3f( -30.0f, -32.0f, 0.0f);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(0.0f,0.0f,1.0f);
+		glColor3f(0.0f,0.0f,1.0f);
 
-	glVertex3f( -10.0f, 0.0f, 0.0f);
-	glVertex3f( -30.0f, 0.0f, 0.0f);
-	glVertex3f( -30.0f, 0.0f, 21.0f);
+		glVertex3f( -10.0f, 0.0f, 0.0f);
+		glVertex3f( -30.0f, 0.0f, 0.0f);
+		glVertex3f( -30.0f, 0.0f, 21.0f);
 	glEnd();
 
 
@@ -122,6 +123,8 @@ Flight::draw()
 
 	if(focused)
 		glColor4f(1.0f, 0.0f, 0.0f, 0.4f);
+	else if(instorm)
+		glColor4f(0.0f,1.0f,1.0f, 0.2f);
 	else
 		glColor4f(1.0f,1.0f,1.0f, 0.2f);
 

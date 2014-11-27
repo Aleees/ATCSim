@@ -53,6 +53,8 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
+	float getInstorm() {return instorm;}
+	void setInstorm(bool state){ instorm = state;};
 	std::string getId(){return id;};
 
 private:
@@ -62,6 +64,7 @@ private:
 	float speed;
 	std::list<Route> route;
 	bool focused;
+	bool instorm;
 
 	float points;
 };
