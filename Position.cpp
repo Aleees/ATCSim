@@ -58,5 +58,6 @@ Position::angles(Position pos, float &bearing, float &inclination)
 	distxy = sqrtf( ((x-pos.get_x())*(x-pos.get_x())) + ((y-pos.get_y())*(y-pos.get_y())));
 
 	bearing = atan2f(y-pos.get_y(), x-pos.get_x());
+
 	inclination = atan2f(pos.get_z()-z, distxy);
 }

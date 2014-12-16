@@ -34,6 +34,7 @@ public:
 	float get_x() {return x;};
 	float get_y() {return y;};
 	float get_z() {return z;};
+//	float get_P() {return Position;};
 
 	void set_x(float _x) {x = _x;};
 	void set_y(float _y) {y = _y;};
@@ -44,6 +45,7 @@ public:
 
 private:
 		float x, y, z;
+		
 
 };
 

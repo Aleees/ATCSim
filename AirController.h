@@ -26,6 +26,8 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Position.h"
+#include "Flight.h"
 
 class AirController: public Singleton<AirController> {
 public:
@@ -33,6 +35,38 @@ public:
 	virtual ~AirController();
 
 	void doWork();
+
+	bool GetTurnCollision(){return TurnCollision;};
+	
+
+private:
+
+	
+   Position HLP[4][10];
+   Route r[4][10];
+    Position AltF;
+    Position AltF1;
+    Route RAltF1;
+    Route RAltF;
+    int NVE; // NUMERO DE VUELOS EN ESPERA
+    int Ini; // Inicia Vuelos
+    int CambioAlt;    
+
+    int g;
+
+
+
+	float t1;
+	float t2;
+	//int cont;
+	float distanciax;
+	float distanciay;
+	float distanciaz;
+	Route raux;
+	bool TurnCollision;
+	int f1;
+
+
 };
 
 #endif /* AIRCONTROLLER_H_ */

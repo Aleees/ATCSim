@@ -35,6 +35,20 @@ typedef struct {
 	float speed;
 } Route;
 
+//typedef struct {
+	//Position pointT;
+
+//}TurnPoints;
+
+typedef struct {
+
+	Position pini;
+	Position pfin;
+
+}DosPuntos;
+
+typedef enum  {NORMAL, GIRANDO}Tipostate;
+
 class Flight {
 public:
 	Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed);
@@ -45,6 +59,7 @@ public:
 
 
 	std::list<Route> *getRoute() { return &route;};
+	//std::list<TurnPoints> *getTurnPoints() { return &turnpoints;};
 	bool routed() { return !route.empty();};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
@@ -52,8 +67,22 @@ public:
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
+	float SetSpeed(float _speed) {speed= _speed;}
 	float getPoints() {return points;};
 	std::string getId(){return id;};
+	float aceleration(float delta_t);
+	void test();
+	void doit( float delta_t);
+	DosPuntos puntogiro(Position P2, Position P3, float radio);
+	float AngularSpeed();
+	bool Getsecuestrado(){return secuestrado;};
+	Tipostate Setstate(Tipostate _state){state= _state;};
+	bool SetCollisionPosible(bool _Col){CollisionPosible=  _Col;};
+
+	float SetGoalBear( float GolB){goalBearing= GolB;};
+int HL; //Nivel de 0 -> Ruta Aterrizaje, 1->1000, 2-> 1500 , , , ,   100 -> Sin Ruta 
+
+
 
 private:
 	std::string id;
@@ -61,9 +90,29 @@ private:
 	float bearing, inclination;
 	float speed;
 	std::list<Route> route;
+
 	bool focused;
 
 	float points;
+	bool secuestrado;
+	Tipostate state;
+	int i;
+	int j;
+
+	float Dist;
+
+	std::list<Position> turnpointso;
+	std::list<Position> turnpointsf;
+	std::list<Position> listvector;
+
+	bool CollisionPosible;
+float goalBearing;
+
+//float goalBearing;
+
+
+
+
 };
 
 #endif /* FLIGHT_H_ */

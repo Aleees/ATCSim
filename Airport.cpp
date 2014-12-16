@@ -54,7 +54,9 @@ Airport::Airport() {
 	sec = 0;
 	points = INIT_POINTS;
 	max_flights = INIT_MAX_FLIGHTS;
+//	max_flights = 1;
     SimTimeMod = 1.0;
+
 }
 
 Airport::~Airport() {
@@ -72,11 +74,13 @@ Airport::generate_flight()
 	float bear, inc;
 	char id[6];
 
+
+
 	angle = toRadians((float)(rand() % 360 - 180));
 
-	x = 20000.0f * cos(angle);
-	y = 20000.0f * sin(angle);
-	z = 2000.0f + (float)(rand() % 2000);
+	x = AIRPORT_DISTANCE_MAX * cos(angle);
+	y = AIRPORT_DISTANCE_MAX * sin(angle);
+	z = FLIGHT_HEIGHT + (float)(rand() % 2000);
 
 	Position ipos(x, y, z);
 	Position pos0(0.0, 0.0, 0.0);
@@ -265,6 +269,7 @@ Airport::checkLandings()
 			it = removeFlight((*it)->getId());
 
 			points += (int)(*it)->getPoints();
+
 		}else
 			it++;
 	}
@@ -284,18 +289,18 @@ Airport::draw()
 {
 	glBegin(GL_QUADS);
 	glColor3f(0.2f,0.2f,0.2f);
-	glVertex3f( -10000.0f, 10000.0f, 0.0f);
-	glVertex3f(  10000.0f, 10000.0f, 0.0f);
-	glVertex3f(  10000.0f,-10000.0f, 0.0f);
-	glVertex3f( -10000.0f,-10000.0f, 0.0f);
+	glVertex3f( -AIRPORT_DISTANCE_MAX, AIRPORT_DISTANCE_MAX, 0.0f);
+	glVertex3f(  AIRPORT_DISTANCE_MAX, AIRPORT_DISTANCE_MAX, 0.0f);
+	glVertex3f(  AIRPORT_DISTANCE_MAX,-AIRPORT_DISTANCE_MAX, 0.0f);
+	glVertex3f( -AIRPORT_DISTANCE_MAX,-AIRPORT_DISTANCE_MAX, 0.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
 	glColor3f(1.0f,1.0f,0.0f);
-	glVertex3f(  0.0f, -40.0f, 0.01f);
-	glVertex3f(  0.0f,  40.0f, 0.01f);
-	glVertex3f(  -750.0f, 40.0f, 0.01f);
-	glVertex3f( -750, -40.0f, 0.01f);
+	glVertex3f(  0.0f, -(LANDING_STRIP_W/2.0), 0.01f);
+	glVertex3f(  0.0f,  LANDING_STRIP_W, 0.01f);
+	glVertex3f( -LANDING_STRIP_L, LANDING_STRIP_W, 0.01f);
+	glVertex3f( -LANDING_STRIP_L, -LANDING_STRIP_W, 0.01f);
 	glEnd();
 
 	glPushMatrix();
