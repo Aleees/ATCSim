@@ -239,6 +239,7 @@ Flight::update(float delta_t)
 	float basura;
 	Route aux;
 	Route next;
+	bool status;
 	//int signw;
 
 	aux = route.front();
@@ -260,7 +261,34 @@ Flight::update(float delta_t)
 		CPpos = route.front().pos;
 		pos.angles(CPpos, desbear, inclination);
 		desbear = normalizePi(desbear + M_PI);
-		bearing = normalizePi(bearing +saturate((desbear-bearing),-1,1)*delta_t);
+		//std::cerr<<(bearing<desbear) && (bearing > normalizePi(desbear-M_PI))<<std::endl;
+		status = (bearing<desbear) && (bearing > normalizePi(desbear-M_PI));
+//		if(focused)
+//		{
+//			std::cerr<<status<<std::endl;
+//			std::cerr<<"Bear"<<bearing<<" "<<toDegrees(bearing)<<std::endl;
+//			std::cerr<<"Desbear"<<desbear<<" "<<toDegrees(desbear)<<std::endl;
+//			std::cerr<<"nor Desbear"<<normalizePi(desbear-M_PI)<<" "<<toDegrees(normalizePi(desbear-M_PI))<<std::endl;
+//			std::cerr<<saturate((desbear-bearing),-1,1)*delta_t<<std::endl;
+//			std::cerr<<"------------"<<std::endl;
+//
+//
+//		}
+		if(abs(desbear-bearing)<0.01)
+			bearing = desbear;
+		else{
+			if((bearing<desbear) && (bearing > normalizePi(desbear-M_PI)))
+			{
+				bearing = normalizePi(bearing +saturate((desbear-bearing),-1,1)*delta_t);
+			} else
+			{
+				bearing = normalizePi(bearing -saturate(abs((abs(desbear)-abs(bearing))),-1,1)*delta_t);
+			}
+		}
+
+
+		//desbear = normalizePi(desbear + M_PI);
+		//bearing = normalizePi(bearing +saturate((desbear-bearing),-1,1)*delta_t);
 		//bearing = normalizePi(bearing +closestdir(desbear,bearing)*delta_t);
 
 
@@ -301,7 +329,7 @@ Flight::update(float delta_t)
 		closestd = closestdir(desbear,bearing);
 
 		//incurve = !incurve;
-		std::cerr<<"incurve"<<" "<<incurve<<std::endl;
+		//std::cerr<<"incurve"<<" "<<incurve<<std::endl;
 	} else if(pos.distance(last_pos) > pos.distance(CPpos))
 	{
 		route.pop_front();

@@ -34,7 +34,7 @@
 //int numrutasentrada = 10;
 typedef struct{
 	Route route;
-	bool timetable[150];
+	bool timetable[SEC_FRANJA];
 } Entryroute;
 
 class AirController: public Singleton<AirController> {
@@ -46,11 +46,12 @@ public:
 private:
 	//float tablahorarios[10][30];
 	//int numrutasentrada = 10;
-	Entryroute rutasentrada[10];
+	Entryroute rutasentrada[NUM_RUTAS_ENTRADA];
 	void iniRutaentrada();
 	float timetoarrive(Entryroute ruta, Flight vuelo);
 	bool disponibilidad(Entryroute ruta, Flight vuelo);
 	int timetofranja(float tiempo,int secenfranja);
+	void paintTable();
 	int franjadisponible(int inifranja);
 	Route asignroute(Flight vuelo);
 	void generateEntryRoute();

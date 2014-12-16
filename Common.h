@@ -55,6 +55,11 @@
 #define MEAN_TIME_STORM		30
 #define VARIANCE_TIME_STORM	10
 
+#define SEC_FRANJA 			30
+#define DIST_RUTAS_ENTRADA	1000
+#define NUM_RUTAS_ENTRADA	10
+#define	FRANJAS_EN_RUTA		150
+
 
 
 /**

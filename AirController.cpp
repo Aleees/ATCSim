@@ -35,13 +35,17 @@ AirController::AirController() {
 	Route r1;
 	Entryroute rutaen;
 	int i;
-	for(i=0;i<10;i++)
+	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
 	{
-		pos1.set_x(pos1.get_x()+i*500);
+		pos1.set_x(pos1.get_x()+i*DIST_RUTAS_ENTRADA);
 		r1.pos = pos1;
 		r1.speed = 100.0;
 		rutaen.route = r1;
 		//iniRutaentrada(rutaen);
+		if(i==1)
+		{
+			std::cerr<<"R1pos"<<r1.pos.get_x()<<std::endl;
+		}
 		rutasentrada[i] = rutaen;
 
 	}
@@ -74,20 +78,44 @@ AirController::~AirController() {
 void
 AirController::iniRutaentrada()
 {
-	int i,j;
+
+	Position pos1(3000.0, 000.0, 600.0);
+	Route r1;
+	int j;
 	int rutanum;
-	//int numberroutes = 10;
-	//bool ocupada;
-	//std::list<Entryroute>::iterator it;
-	for(i=0;i<10;i++)
+	Entryroute rutaen;
+	int i;
+	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
 	{
-		for(j=0;j<150;j++)
+		pos1.set_x(pos1.get_x()+i*DIST_RUTAS_ENTRADA);
+		r1.pos = pos1;
+		r1.speed = 100.0;
+		rutaen.route = r1;
+		//iniRutaentrada(rutaen);
+		if(i==1)
+		{
+			std::cerr<<"R1pos"<<r1.pos.get_x()<<std::endl;
+		}
+		rutasentrada[i] = rutaen;
+		for(j=0;j<FRANJAS_EN_RUTA;j++)
 		{
 			rutasentrada[i].timetable[j] = false;
 
 
 		}
+
 	}
+	//iniRutaentrada();
+	lastupdate = 0;
+//	for(i=0;i< NUM_RUTAS_ENTRADA;i++)
+//	{
+//		for(j=0;j<FRANJAS_EN_RUTA;j++)
+//		{
+//			rutasentrada[i].timetable[j] = false;
+//
+//
+//		}
+//	}
 
 }
 float
@@ -103,7 +131,9 @@ AirController::timetofranja(float tiempo,int secenfranja)
 	int i=0;
 	while((i+1)*secenfranja<tiempo)
 		i++;
+	std::cerr<<tiempo<<" "<<i<<std::endl;
 	return i;
+
 }
 //void
 //AirController::generateEntryRoute()
@@ -124,7 +154,7 @@ bool
 AirController::disponibilidad(Entryroute ruta, Flight vuelo)
 {
 	float tiempo = timetoarrive(ruta,vuelo);
-	int franja = timetofranja(tiempo,15);
+	int franja = timetofranja(tiempo,SEC_FRANJA );
 	return ruta.timetable[franja];
 }
 
@@ -150,25 +180,47 @@ Route
 AirController::asignroute(Flight vuelo)
 {
 	int i;
-	int inifranja = timetofranja(timetoarrive(rutasentrada[0],vuelo),15);
+	int inifranja = timetofranja(timetoarrive(rutasentrada[0],vuelo),SEC_FRANJA );
 	int franjaen0 = franjadisponible(inifranja);
+	bool status;
+	std::cerr<<vuelo.getId()<<std::endl;
+	std::cerr<<inifranja<<std::endl;
+	std::cerr<<franjaen0<<std::endl;
+	std::cerr<<timetoarrive(rutasentrada[0],vuelo)<<std::endl;
+	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
+	{
+		if((franjaen0-i)<0)
+			break;
+		rutasentrada[i].timetable[franjaen0-i] = true;
+	}
 
 	if(franjaen0==inifranja)
 	{
-		for(i=0;i<10;i++)
-		{
-			if((franjaen0-i)<0)
-				break;
-			rutasentrada[i].timetable[franjaen0-i] = true;
-		}
+//		for(i=0;i<NUM_RUTAS_ENTRADA;i++)
+//		{
+//			if((franjaen0-i)<0)
+//				break;
+//			rutasentrada[i].timetable[franjaen0-i] = true;
+//		}
+		std::cerr<<"ruta"<<0<<std::endl;
 		return rutasentrada[0].route;
 	} else
 	{
 
-			if((franjaen0-inifranja)<9)
+		//status = (franjaen0-inifranja)<(NUM_RUTAS_ENTRADA-1);
+		//std::cerr<<status<<std::endl;
+			if(((franjaen0-inifranja)<(NUM_RUTAS_ENTRADA-1)))
+			{
+//				std::cerr<<franjaen0-inifranja<<std::endl;
+//				std::cerr<<rutasentrada[2].route.pos.get_x()<<std::endl;
+//				std::cerr<<rutasentrada[2].route.pos.get_y()<<std::endl;
+//				std::cerr<<rutasentrada[2].route.pos.get_z()<<std::endl;
+				std::cerr<<"ruta"<<franjaen0-inifranja<<std::endl;
 				return rutasentrada[franjaen0-inifranja].route;
+			}
 			else {
-				return rutasentrada[franjaen0%9].route;
+				std::cerr<<"ruta"<<franjaen0%(NUM_RUTAS_ENTRADA-1)<<std::endl;
+				return rutasentrada[franjaen0%(NUM_RUTAS_ENTRADA-1)].route;
 			}
 
 	}
@@ -195,13 +247,13 @@ void
 AirController::updaterutas()
 {
 	int i,j;
-	for(i=0;i<10;i++)
+	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
 	{
-		for(j=0;j<14;j++)
+		for(j=0;j<FRANJAS_EN_RUTA-1;j++)
 		{
 			rutasentrada[i].timetable[j] = rutasentrada[i].timetable[j+1];
 		}
-		rutasentrada[i].timetable[14] = false;
+		rutasentrada[i].timetable[FRANJAS_EN_RUTA-1] = false;
 	}
 
 
@@ -211,6 +263,22 @@ void AirController::boo()
 {
 
 };
+
+void
+AirController::paintTable()
+{
+	int i,j;
+	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
+	{
+		std::cerr<<"ruta"<<i<<std::endl;
+		for(j=0;j<10;j++)
+		{
+			std::cerr<<" "<<rutasentrada[i].timetable[j]<<" ";
+		}
+		std::cerr<<std::endl;
+	}
+
+}
 void
 AirController::doWork()
 {
@@ -258,7 +326,9 @@ AirController::doWork()
 		if((*it)->getRoute()->empty())
 		{
 			if(it != flights.begin()){
+				paintTable();
 				r1 = asignroute(*(*it));
+				paintTable();
 				//std::cerr<<r1.pos.get_x()<<std::endl;
 				--it;
 				it++;
@@ -269,12 +339,14 @@ AirController::doWork()
 //					it++;
 //
 //				}
+
 			(*it)->getRoute()->push_back(r3);
 			(*it)->getRoute()->push_front(r2);
 			(*it)->getRoute()->push_front(r1);
+
 			(*it)->getPosition().angles(pos2,bearing,inclination);
 			bearing = normalizePi(bearing+M_PI);
-			std::cerr<<bearing<<std::endl;
+			//std::cerr<<bearing<<std::endl;
 			if(bearing<0.9&&bearing>0)
 			{
 				r0 = r1;
@@ -305,7 +377,7 @@ AirController::doWork()
 //		        }
 	}
 
-	if(ta-lastupdate >15*1000000)
+	if(ta-lastupdate >SEC_FRANJA*1000000)
 	{
 		updaterutas();
 		lastupdate = ta;
