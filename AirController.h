@@ -26,6 +26,16 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Position.h"
+#include <list>
+#include "Flight.h"
+
+
+//int numrutasentrada = 10;
+typedef struct{
+	Route route;
+	bool timetable[150];
+} Entryroute;
 
 class AirController: public Singleton<AirController> {
 public:
@@ -34,7 +44,19 @@ public:
 
 	void doWork();
 private:
-	float tablahorarios[10][30];
+	//float tablahorarios[10][30];
+	//int numrutasentrada = 10;
+	Entryroute rutasentrada[10];
+	void iniRutaentrada();
+	float timetoarrive(Entryroute ruta, Flight vuelo);
+	bool disponibilidad(Entryroute ruta, Flight vuelo);
+	int timetofranja(float tiempo,int secenfranja);
+	int franjadisponible(int inifranja);
+	Route asignroute(Flight vuelo);
+	void generateEntryRoute();
+	double lastupdate;
+	void updaterutas();
+	void boo();
 };
 
 #endif /* AIRCONTROLLER_H_ */

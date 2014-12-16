@@ -38,6 +38,7 @@ typedef struct {
 class Flight {
 public:
 	Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed);
+	Flight();
 	virtual ~Flight();
 
 	void update(float delta_t);
@@ -51,22 +52,35 @@ public:
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
+	float getDesbear() { return desbear;};
+	void setDesbear();
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
 	float getInstorm() {return instorm;}
 	void setInstorm(bool state){ instorm = state;};
 	std::string getId(){return id;};
+	void setbegcurve();
+	void getEndcurve();
+	void getCenterrot();
+
 
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
+	float desbear;
 	float speed;
 	std::list<Route> route;
 	bool focused;
 	bool instorm;
-
+	bool incurve;
+	int testing;
+	int closestd;
+	Position centerrotation;
 	float points;
+	float radiorot;
+	int signw;
+	bool firstbear;
 };
 
 #endif /* FLIGHT_H_ */

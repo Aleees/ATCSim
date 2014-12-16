@@ -221,6 +221,7 @@ Airport::step()
 
 
 	if(flights.size()<max_flights)
+	//if(flights.size()<4)
 		generate_flight();
 		
 //	if(storms.size()<1)

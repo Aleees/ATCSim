@@ -55,6 +55,8 @@
 #define MEAN_TIME_STORM		30
 #define VARIANCE_TIME_STORM	10
 
+
+
 /**
 * defines the sign of a (-1, 0 or 1)
 */
@@ -208,5 +210,31 @@ inline float normalDist(float x, float mu, float st)
 
 	return (1.0/d1)*exp(-(diff*diff)/d2);
 }
+
+inline float saturate(float control, float min, float max)
+{
+	if(control<min)
+	{
+		return min;
+	} else if(control>max)
+	{
+		return max;
+	} else
+		return control;
+
+
+}
+inline int closestdir(float actualangle,float desiredangle)
+{
+	float difference = abs(actualangle-desiredangle);
+	if(difference > (2*M_PI-difference))
+		return 1;
+	return -1;
+}
+
+
+
+
+
 
 #endif // __Math_Common_h__
