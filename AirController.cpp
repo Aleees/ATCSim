@@ -29,57 +29,14 @@
 #include <list>
 #include <sys/time.h>
 
-AirController::AirController() {
-	// TODO Auto-generated constructor stub
-	Position pos1(3000.0, 000.0, 600.0);
-	Route r1;
-	Entryroute rutaen;
-	int i;
-	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
-	{
-		pos1.set_x(pos1.get_x()+i*DIST_RUTAS_ENTRADA);
-		r1.pos = pos1;
-		r1.speed = 100.0;
-		rutaen.route = r1;
-		//iniRutaentrada(rutaen);
-		if(i==1)
-		{
-			std::cerr<<"R1pos"<<r1.pos.get_x()<<std::endl;
-		}
-		rutasentrada[i] = rutaen;
-
-	}
-	iniRutaentrada();
-	lastupdate = 0;
-
-
-}
-
-AirController::~AirController() {
-	// TODO Auto-generated destructor stub
-}
-
-// bool AirController::checkAvailability(float pista, float tiempo)
-// {
-//	int i,j;
-//	for(i=pista;i>0;i--)
-//	{
-//		for(j=tiempo;j>0;i--)
-//		{
-//			if(tablahorarios[i][j]==true)		
-//		
-//		}
-//	
-//	
-//	}
-// 
-// 
-// }
-void
-AirController::iniRutaentrada()
+void boo1(Entryroute rutas)
 {
 
-	Position pos1(3000.0, 000.0, 600.0);
+
+}
+
+AirController::AirController() {
+	Position pos1(3000.0, 000.0, 100.0);
 	Route r1;
 	int j;
 	int rutanum;
@@ -88,14 +45,10 @@ AirController::iniRutaentrada()
 	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
 	{
 		pos1.set_x(pos1.get_x()+i*DIST_RUTAS_ENTRADA);
+		pos1.set_z(pos1.get_z()+i*ALT_ENTRE_RUTAS);
 		r1.pos = pos1;
 		r1.speed = 100.0;
 		rutaen.route = r1;
-		//iniRutaentrada(rutaen);
-		if(i==1)
-		{
-			std::cerr<<"R1pos"<<r1.pos.get_x()<<std::endl;
-		}
 		rutasentrada[i] = rutaen;
 		for(j=0;j<FRANJAS_EN_RUTA;j++)
 		{
@@ -105,18 +58,45 @@ AirController::iniRutaentrada()
 		}
 
 	}
-	//iniRutaentrada();
+
 	lastupdate = 0;
-//	for(i=0;i< NUM_RUTAS_ENTRADA;i++)
+	//std::cerr<<"err00r"<<std::endl;
+
+
+}
+
+AirController::~AirController() {
+	// TODO Auto-generated destructor stub
+}
+
+void
+AirController::iniRutaentrada()
+{
+
+//	Position pos1(3000.0, 000.0, 100.0);
+//	Route r1;
+//	int j;
+//	int rutanum;
+//	Entryroute rutaen;
+//	int i;
+//	for(i=0;i<NUM_RUTAS_ENTRADA;i++)
 //	{
+//		pos1.set_x(pos1.get_x()+i*DIST_RUTAS_ENTRADA);
+//		pos1.set_z(pos1.get_z()+i*ALT_ENTRE_RUTAS);
+//		r1.pos = pos1;
+//		r1.speed = 100.0;
+//		rutaen.route = r1;
+//		rutasentrada[i] = rutaen;
 //		for(j=0;j<FRANJAS_EN_RUTA;j++)
 //		{
 //			rutasentrada[i].timetable[j] = false;
 //
 //
 //		}
+//
 //	}
-
+//	lastupdate = 0;
+//	std::cerr<<"errir"<<std::endl;
 }
 float
 AirController::timetoarrive(Entryroute ruta, Flight vuelo)
@@ -135,20 +115,7 @@ AirController::timetofranja(float tiempo,int secenfranja)
 	return i;
 
 }
-//void
-//AirController::generateEntryRoute()
-//{
-//	float x = 600+rutasentrada.size()*100;
-//	Position pos1(3000.0, 000.0, x);
-//	Route r1;
-//	Entryroute ruta;
-//	r1.pos = pos1;
-//	r1.speed = 100.0;
-//	ruta.route = r1;
-//	iniRutaentrada(ruta);
-//	rutasentrada.push_front(ruta);
-//
-//}
+
 
 bool
 AirController::disponibilidad(Entryroute ruta, Flight vuelo)
@@ -196,25 +163,13 @@ AirController::asignroute(Flight vuelo)
 
 	if(franjaen0==inifranja)
 	{
-//		for(i=0;i<NUM_RUTAS_ENTRADA;i++)
-//		{
-//			if((franjaen0-i)<0)
-//				break;
-//			rutasentrada[i].timetable[franjaen0-i] = true;
-//		}
 		std::cerr<<"ruta"<<0<<std::endl;
 		return rutasentrada[0].route;
 	} else
 	{
 
-		//status = (franjaen0-inifranja)<(NUM_RUTAS_ENTRADA-1);
-		//std::cerr<<status<<std::endl;
 			if(((franjaen0-inifranja)<(NUM_RUTAS_ENTRADA-1)))
 			{
-//				std::cerr<<franjaen0-inifranja<<std::endl;
-//				std::cerr<<rutasentrada[2].route.pos.get_x()<<std::endl;
-//				std::cerr<<rutasentrada[2].route.pos.get_y()<<std::endl;
-//				std::cerr<<rutasentrada[2].route.pos.get_z()<<std::endl;
 				std::cerr<<"ruta"<<franjaen0-inifranja<<std::endl;
 				return rutasentrada[franjaen0-inifranja].route;
 			}
@@ -225,22 +180,6 @@ AirController::asignroute(Flight vuelo)
 
 	}
 
-
-//	if(franjaen0<10)
-//	{
-//		for(i=0;i<franjaen0;i++)
-//		{
-//			rutasentrada[franjaen0-i].timetable[i] = true;
-//
-//		}
-//		return rutasentrada[0].route;
-//	} else {
-//		for(i=0;i<10;i++)
-//		{
-//			rutasentrada[i].timetable[franjaen0-(10-i)-2]=true;
-//		}
-//	}
-//	return rutasentrada[franjaen0].route;
 }
 
 void
@@ -262,7 +201,7 @@ AirController::updaterutas()
 void AirController::boo()
 {
 
-};
+}
 
 void
 AirController::paintTable()
@@ -282,107 +221,187 @@ AirController::paintTable()
 void
 AirController::doWork()
 {
+
 	std::list<Flight*> flights = Airport::getInstance()->getFlights();
-	std::list<Flight*>::iterator it;
-	long ta;
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	//Flight vuelo;
+		std::list<Flight*>::iterator it;
+		long ta;
+		struct timeval tv;
+		gettimeofday(&tv, NULL);
+		//Flight vuelo;
 
-	ta = tv.tv_sec*1000000 + tv.tv_usec;
-	//tb = last_ts.tv_sec*1000000 + last_ts.tv_usec;
+		ta = tv.tv_sec*1000000 + tv.tv_usec;
+		//tb = last_ts.tv_sec*1000000 + last_ts.tv_usec;
 
-//	delta_t = ((float)(ta-tb)) /1000000.0;
-//	last_ts = tv;
-	float bearing,inclination;
-
-	
-	
-	Position pos0(5000.0, 2000.0, 1200.0);
-	Position pos1(3000.0, 000.0, 600.0);
-	Position pos2(0.0, 0.0, 25.0);
-	Position pos3(-750.0, 0.0, 25.0);
-
-	Route r0, r1, r2, r3;
-	r0.pos = pos0;
-	r0.speed = 200;
-
-
-	r1.pos = pos1;
-	r1.speed = 100.0;
+	//	delta_t = ((float)(ta-tb)) /1000000.0;
+	//	last_ts = tv;
+		float bearing,inclination;
 
 
 
-	//Linea final. NO TOCAR. Común a todos.
-	r2.pos = pos2;
-	r2.speed = 15.0;
-	r3.pos = pos3;
-	r3.speed = 0.0;
+		Position pos0(5000.0, 2000.0, 1200.0);
+		Position pos1(3000.0, 000.0, 600.0);
+		Position pos2(0.0, 0.0, 25.0);
+		Position pos3(-750.0, 0.0, 25.0);
+
+		Route r0, r1, r2, r3;
+		r0.pos = pos0;
+		r0.speed = 200;
+
+
+		r1.pos = pos1;
+		r1.speed = 100.0;
 
 
 
-	for(it = flights.begin(); it!=flights.end(); ++it)
-	{
-		if((*it)->getRoute()->empty())
+		//Linea final. NO TOCAR. Común a todos.
+		r2.pos = pos2;
+		r2.speed = 15.0;
+		r3.pos = pos3;
+		r3.speed = 0.0;
+
+
+
+		for(it = flights.begin(); it!=flights.end(); ++it)
 		{
-			if(it != flights.begin()){
-				paintTable();
-				r1 = asignroute(*(*it));
-				paintTable();
-				//std::cerr<<r1.pos.get_x()<<std::endl;
-				--it;
-				it++;
-
-			}
-//			if(it != flights.begin()){
-//					r1.pos.set_x(r1.pos.get_x()+(*(--it))->getRoute()->begin()->pos.get_x());
-//					it++;
-//
-//				}
-
-			(*it)->getRoute()->push_back(r3);
-			(*it)->getRoute()->push_front(r2);
-			(*it)->getRoute()->push_front(r1);
-
-			(*it)->getPosition().angles(pos2,bearing,inclination);
-			bearing = normalizePi(bearing+M_PI);
-			//std::cerr<<bearing<<std::endl;
-			if(bearing<0.9&&bearing>0)
+			if((*it)->getRoute()->empty())
 			{
-				r0 = r1;
-				r0.pos.set_y(-300);
-				(*it)->getRoute()->push_front(r0);
+				if(it != flights.begin()){
+					paintTable();
+					r1 = asignroute(*(*it));
+					//std::cerr<<r1.pos.get_x()<<std::endl;
+					--it;
+					it++;
+
+				}
+	//			if(it != flights.begin()){
+	//					r1.pos.set_x(r1.pos.get_x()+(*(--it))->getRoute()->begin()->pos.get_x());
+	//					it++;
+	//
+	//				}
+				(*it)->getRoute()->push_back(r3);
+				(*it)->getRoute()->push_front(r2);
+				(*it)->getRoute()->push_front(r1);
+				(*it)->getPosition().angles(pos2,bearing,inclination);
+				bearing = normalizePi(bearing+M_PI);
+				std::cerr<<bearing<<std::endl;
+				if(bearing<0.9&&bearing>0)
+				{
+					r0 = r1;
+					r0.pos.set_y(-300);
+					(*it)->getRoute()->push_front(r0);
+				}
+				if(bearing>-0.9 && bearing<0)
+				{
+					r0 = r1;
+					r0.pos.set_y(300);
+					(*it)->getRoute()->push_front(r0);
+				}
+
+
+				//(*it)->getRoute()->push_front(r0);
+
 			}
-			if(bearing>-0.9 && bearing<0)
-			{
-				r0 = r1;
-				r0.pos.set_y(300);
-				(*it)->getRoute()->push_front(r0);
-			}
-
-
-			//(*it)->getRoute()->push_front(r0);
-
+	//		 if((*it)->getRoute()->empty())
+	//		        {
+	//		            if(it != flights.begin()){
+	//		                r1.pos.set_x(r1.pos.get_x()+(*(--it))->getRoute()->begin()->pos.get_x());
+	//		                it++;
+	//
+	//		            }
+	//		            (*it)->getRoute()->push_front(r1);
+	//		            (*it)->getRoute()->push_back(r2);
+	//		            (*it)->getRoute()->push_back(r3);
+	//		        }
 		}
-//		 if((*it)->getRoute()->empty())
-//		        {
-//		            if(it != flights.begin()){
-//		                r1.pos.set_x(r1.pos.get_x()+(*(--it))->getRoute()->begin()->pos.get_x());
-//		                it++;
-//
-//		            }
-//		            (*it)->getRoute()->push_front(r1);
-//		            (*it)->getRoute()->push_back(r2);
-//		            (*it)->getRoute()->push_back(r3);
-//		        }
-	}
 
-	if(ta-lastupdate >SEC_FRANJA*1000000)
-	{
-		updaterutas();
-		lastupdate = ta;
-	}
-	boo();
+		if(ta-lastupdate >15*1000000)
+		{
+			updaterutas();
+			lastupdate = ta;
+		}
+		boo();
+//	std::list<Flight*> flights = Airport::getInstance()->getFlights();
+//	std::list<Flight*>::iterator it;
+//	long ta;
+//	struct timeval tv;
+//	gettimeofday(&tv, NULL);
+//	//Flight vuelo;
+//	//std::cerr<<"errir"<<std::endl;
+//	ta = tv.tv_sec*1000000 + tv.tv_usec;
+//	float bear,inclina;
+//
+//
+//
+//	Position pos0(5000.0, 2000.0, 1200.0);
+//	Position pos1(3000.0, 000.0, 600.0);
+//	Position pos2(0.0, 0.0, 25.0);
+//	Position pos3(-750.0, 0.0, 25.0);
+//
+//	Route r0, r1, r2, r3;
+//	r0.pos = pos0;
+//	r0.speed = 200;
+//
+//
+//	r1.pos = pos1;
+//	r1.speed = 100.0;
+//
+//
+//
+//	//Linea final. Común a todos.
+//	r2.pos = pos2;
+//	r2.speed = 15.0;
+//	r3.pos = pos3;
+//	r3.speed = 0.0;
+//
+//
+//	for(it = flights.begin(); it!=flights.end(); ++it)
+//	{
+//		if((*it)->getRoute()->empty())
+//		{
+//			if(it != flights.begin()){
+//				paintTable();
+//				r1 = asignroute(*(*it));
+//				paintTable();
+//
+//
+//			}
+//			std::cerr<<&it<<std::endl;
+//			(*it)->getRoute()->push_back(r3);
+//
+//
+//			(*it)->getRoute()->push_front(r2);
+//			(*it)->getRoute()->push_front(r1);
+//			//	std::cerr<<"dowork2"<<std::endl;
+//
+//
+//			(*it)->getPosition().angles(pos2,bear,inclina);
+//
+//			bear = normalizePi(bear+M_PI);
+//			if(bear<0.9&&bear>0)
+//			{
+//				r0 = r1;
+//				r0.pos.set_y(-300);
+//				(*it)->getRoute()->push_front(r0);
+//			}
+//
+//			if(bear>-0.9 && bear<0)
+//			{
+//				r0 = r1;
+//				r0.pos.set_y(300);
+//				(*it)->getRoute()->push_front(r0);
+//			}
+//
+//
+//		}
+//	}
+//
+//	if(ta-lastupdate >SEC_FRANJA*1000000)
+//	{
+//		updaterutas();
+//		lastupdate = ta;
+//	}
+//	//boo();
+
 
 
 

@@ -40,3 +40,15 @@ Añadido parametros:
 
 
 //PORQUE SSSSSSSSS!
+
+
+//CAMBIAR TODOS LOS MIOOOOOOOOOOOO
+
+
+//Problemas encontrados
+	//Aviones chocandose por tener velocidad menor que la minima en vuelo
+	-Algunos aviones tienen como primer waypont(entendiendo como primero a aquel que deben dirigirse nada más ser
+	creados) el punto (0,0,0) con el problema que también la velocidad a la que deben llegar a dicho punto es
+	0 haciendo que muchos aviones se consideren estrellados por estar por debajo de dicha velocidad.
+	-Problema probablemente causado por el que hace las rutas.
+

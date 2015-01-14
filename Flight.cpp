@@ -62,173 +62,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	incurve = false;
 	closestd = 0;
 }
-//Position Flight::getBegcurve()
-//{
-//	Position CPpos, beg;
-//	float x,y,z;
-//	float distcurve = 100;
-//
-//	CPpos = route.front().pos;
-//	x = CPpos.get_x() - distcurve*sin(bearing)*cos(inclination);
-//	y = CPpos.get_y() - distcurve*cos(bearing)*cos(inclination);
-//	z = CPpos.get_z() - distcurve*sin(inclination);
-//
-//
-//	beg.set_pos(x,y,z);
-//
-//
-//}
 
-
-
-//void
-//Flight::setbegcurve()
-//{
-//	Position CPpos;
-//	float distcurve = 500;
-//	float x,y,z;
-//	Route r;
-//	CPpos = route.front().pos;
-//
-//		x = CPpos.get_x() - distcurve* cos(bearing) * cos(inclination);
-//		y = CPpos.get_y() - distcurve* sin(bearing) * cos(inclination);
-//		z = CPpos.get_z() - distcurve*sin(inclination);
-//	Position pos(x,y,z);
-//	r.pos = pos;
-//	r.speed = route.front().speed;
-//	route.push_front(r);
-//	getEndcurve();
-//	testing++;
-//
-//}
-
-//void
-//Flight::getEndcurve()
-//{
-//	Position beg,inter;
-//	Route begr, interr,endr,nextr;
-//	float x,y,z;
-//	float distcurve = 500;
-//	float futbearing,futincl;
-//
-//
-//	begr = route.front();
-//	route.pop_front();
-//	interr = route.front();
-//	route.pop_front();
-//	nextr = route.front();
-//
-//	interr.pos.angles(nextr.pos,futbearing,futincl);
-//
-//	x = interr.pos.get_x() - distcurve*cos(futbearing)*cos(futincl);
-//	y = interr.pos.get_y() - distcurve*sin(futbearing)*cos(futincl);
-//	z = interr.pos.get_z() - distcurve*sin(futincl);
-//
-//	Position end(x,y,z);
-//	endr.pos = end;
-//	endr.speed = interr.speed;
-//
-//	route.push_front(endr);
-//	route.push_front(interr);
-//	route.push_front(begr);
-//	getCenterrot();
-//}
-
-//Position Flight::getCenterrot()
-//{
-//	Route beg,inter,end,next;
-//	float futbear, futincl;
-//
-//	beg = route.front();
-//	route.pop_front();
-//	inter = route.front();
-//	route.pop_front();
-//	end = route.front();
-//	route.pop_front();
-//	next = route.front();
-//
-//	route.push_front(end);
-//	route.push_front(inter);
-//	route.push_front(beg);
-//
-//	end.pos.angles(next.pos,futbear,futincl);
-//
-//
-//}
-//void
-//Flight::getCenterrot()
-//{
-//	Route beg,inter,end,next,test;
-//	Position posbeg, posend,CPpos;
-//	float m1, m2;
-//	float inc1, inc2;
-//	float bearing2;
-//	float normalm1, normalm2;
-//	float rx, ry,rz;
-//	float xb,yb,zb;
-//	float xe,ye,ze;
-//	float alfa1,alfa2,basura;
-//
-//
-//
-//	beg = route.front();
-//	route.pop_front();
-//	inter = route.front();
-//	route.pop_front();
-//	end = route.front();
-//	route.pop_front();
-//	next = route.front();
-//
-//	route.push_front(end);
-//	//route.push_front(inter);
-//	route.push_front(beg);
-//
-//
-//	posbeg = beg.pos;
-//	posend = end.pos;
-//	CPpos = inter.pos;
-//
-//	CPpos.angles(posend,bearing2,inc2);
-//
-//	m1 = tan(bearing);
-//	if(bearing2 != 0)
-//		m2 = tan(bearing2);
-//	else
-//		m2 = tan(0.0000001);
-//
-//	normalm1 = -1/m1;
-//	normalm2 = -1/m2;
-//
-//	xb = posbeg.get_x();
-//	yb = posbeg.get_y();
-//	zb = posbeg.get_z();
-//
-//	xe = posend.get_x();
-//	ye = posend.get_y();
-//	ze = posend.get_z();
-//
-//	rx = (yb-ye-normalm1*xb+normalm2*xe)/(normalm2-normalm1);
-//	ry = yb+normalm1*(rx-xb);
-//	rz = zb;
-//
-//	Position centerradio(rx,ry,rz);
-//	centerrotation = centerradio;
-//	//test.pos = centerradio;
-//	//test.speed = inter.speed;
-//	//route.push_back(test);
-//	//std::cerr<<"x="<<CPpos.get_y()<<"y="<<posend.get_y()<<std::endl;
-//	radiorot = posbeg.distance(centerradio);
-//
-//	std::cerr<<"En getCenterrot:"<<rx<<" "<<ry<<" "<<rz<<std::endl;
-//	std::cerr<<"En posget:"<<posbeg.get_x()<<" "<<posbeg.get_y()<<" "<<posbeg.get_z()<<std::endl;
-//	std::cerr<<"radiorot:"<<radiorot<<std::endl;
-//
-//	beg.pos.angles(end.pos,alfa1,basura);
-//	end.pos.angles(next.pos,alfa2,basura);
-//	signw = 1 - 2*(alfa1>alfa2 && alfa1<(pi+alfa2));
-//	std::cerr<<"signw"<<" "<<signw<<std::endl;
-//
-//}
 
 void
 Flight::update(float delta_t)
@@ -240,7 +74,6 @@ Flight::update(float delta_t)
 	Route aux;
 	Route next;
 	bool status;
-	//int signw;
 
 	aux = route.front();
 	route.pop_front();
@@ -252,7 +85,6 @@ Flight::update(float delta_t)
 		CPpos = route.front().pos;
 		pos.angles(CPpos, bearing, inclination);
 		bearing = normalizePi(bearing + M_PI);
-		//speed = route.front().speed;
 		firstbear = false;
 	}
 
@@ -261,19 +93,7 @@ Flight::update(float delta_t)
 		CPpos = route.front().pos;
 		pos.angles(CPpos, desbear, inclination);
 		desbear = normalizePi(desbear + M_PI);
-		//std::cerr<<(bearing<desbear) && (bearing > normalizePi(desbear-M_PI))<<std::endl;
 		status = (bearing<desbear) && (bearing > normalizePi(desbear-M_PI));
-//		if(focused)
-//		{
-//			std::cerr<<status<<std::endl;
-//			std::cerr<<"Bear"<<bearing<<" "<<toDegrees(bearing)<<std::endl;
-//			std::cerr<<"Desbear"<<desbear<<" "<<toDegrees(desbear)<<std::endl;
-//			std::cerr<<"nor Desbear"<<normalizePi(desbear-M_PI)<<" "<<toDegrees(normalizePi(desbear-M_PI))<<std::endl;
-//			std::cerr<<saturate((desbear-bearing),-1,1)*delta_t<<std::endl;
-//			std::cerr<<"------------"<<std::endl;
-//
-//
-//		}
 		if(abs(desbear-bearing)<0.01)
 			bearing = desbear;
 		else{
@@ -285,25 +105,7 @@ Flight::update(float delta_t)
 				bearing = normalizePi(bearing -saturate(abs((abs(desbear)-abs(bearing))),-1,1)*delta_t);
 			}
 		}
-
-
-		//desbear = normalizePi(desbear + M_PI);
-		//bearing = normalizePi(bearing +saturate((desbear-bearing),-1,1)*delta_t);
-		//bearing = normalizePi(bearing +closestdir(desbear,bearing)*delta_t);
-
-
-
-//		std::cerr<<"desbear"<<" "<<toDegrees(desbear)<<std::endl;
-//		std::cerr<<"bearing"<<" "<<toDegrees(bearing)<<std::endl;
-//		std::cerr<<toDegrees(0.2)<<" "<<toDegrees(normalizePi(0.2+M_PI))<<std::endl;
-//		std::cerr<<closestd<<std::endl;
-//		std::cerr<<saturate((desbear-bearing),-1,1)<<std::endl;
-		//std::cerr<<"Resta"<<" "<<bearing - 0.00001*(bearing-desbear)<<std::endl;
-//		std::cerr<<"------------------"<<std::endl;
-		//bearing = normalizePi(bearing + M_PI);
-
-		//std::cerr<<saturate(speed-route.front().speed,-30,30)*delta_t<<std::endl;
-		speed = speed+ saturate(route.front().speed-speed,-30,30)*delta_t;
+		speed = speed + saturate(route.front().speed-speed,-30,30)*delta_t;
 
 
 	}
@@ -328,17 +130,11 @@ Flight::update(float delta_t)
 		pos.angles(CPpos, desbear, inclination);
 		closestd = closestdir(desbear,bearing);
 
-		//incurve = !incurve;
-		//std::cerr<<"incurve"<<" "<<incurve<<std::endl;
 	} else if(pos.distance(last_pos) > pos.distance(CPpos))
 	{
 		route.pop_front();
 	}
-
 	points = points - delta_t - instorm*delta_t*3;
-//	if(testing<1)
-//		setbegcurve();
-
 }
 
 void
@@ -443,7 +239,9 @@ Flight::draw()
 			int c = 0;
 			for(it = route.begin(); it!=route.end(); ++it)
 			{
-				snprintf(pos_str, 255, "Position: (%lf, %lf, %lf) m", (*it).pos.get_x(), (*it).pos.get_y(), (*it).pos.get_z());
+				//MIOOOOOOOOOOOOOOOOOOO Añadido Speed El comentado es el bueno
+				//snprintf(pos_str, 255, "Position: (%lf, %lf, %lf) m", (*it).pos.get_x(), (*it).pos.get_y(), (*it).pos.get_z());
+				snprintf(pos_str, 255, "Position: (%lf, %lf, %lf,%lf) m", (*it).pos.get_x(), (*it).pos.get_y(), (*it).pos.get_z(), (*it).speed);
 				textDisplay->displayText(pos_str, 25, 250+(20*c), GUI::win_width, GUI::win_height, WHITE, GLUT_BITMAP_HELVETICA_12);
 				c++;
 			}
